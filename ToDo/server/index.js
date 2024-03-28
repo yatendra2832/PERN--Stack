@@ -1,10 +1,22 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const pool = require('./db')
 
 // middlewares
 app.use(express.json())
 app.use(cors());
+
+// Routes 
+//Create a Todo
+
+// Get all Todo
+
+// Get a Todo
+
+// Update Todo
+
+// Delete Todo
 
 
 
