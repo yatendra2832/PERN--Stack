@@ -8,8 +8,7 @@ const RestaurantList = () => {
   const fetchData = async () => {
     try {
       const response = await RestaurantFinder.get("/");
-      const restaurants = response.data;
-      setRestaurants(restaurants );
+      setRestaurants(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -31,7 +30,24 @@ const RestaurantList = () => {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {restaurants && restaurants.map((restaurant) => {
+            return (
+              <tr key={restaurant.id}>
+                <td>{restaurant.name}</td>
+                <td>{restaurant.location}</td>
+                <td>{"$".repeat(restaurant.price_range)}</td>
+                <td>reviews</td>
+                <td>
+                  <button className="btn btn-warning">Edit</button>
+                </td>
+                <td>
+                  <button className="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );
