@@ -17,6 +17,19 @@ const RestaurantList = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await RestaurantFinder.delete(`/${id}`);
+      setRestaurants(
+        restaurants.filter((restaurant) => {
+          return restaurant.id !== id;
+        })
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="table-responsive m-4">
       <table className="table  table-striped">
@@ -31,22 +44,28 @@ const RestaurantList = () => {
           </tr>
         </thead>
         <tbody>
-          {restaurants && restaurants.map((restaurant) => {
-            return (
-              <tr key={restaurant.id}>
-                <td>{restaurant.name}</td>
-                <td>{restaurant.location}</td>
-                <td>{"$".repeat(restaurant.price_range)}</td>
-                <td>reviews</td>
-                <td>
-                  <button className="btn btn-warning">Edit</button>
-                </td>
-                <td>
-                  <button className="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-            );
-          })}
+          {restaurants &&
+            restaurants.map((restaurant) => {
+              return (
+                <tr key={restaurant.id}>
+                  <td>{restaurant.name}</td>
+                  <td>{restaurant.location}</td>
+                  <td>{"$".repeat(restaurant.price_range)}</td>
+                  <td>reviews</td>
+                  <td>
+                    <button className="btn btn-warning">Edit</button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(restaurant.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>
