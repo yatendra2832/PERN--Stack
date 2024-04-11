@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantContext } from "../context/RestaurantContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RestaurantList = () => {
   const { restaurants, setRestaurants } = useContext(RestaurantContext);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -31,6 +32,10 @@ const RestaurantList = () => {
       console.log(error.message);
     }
   };
+
+  const handleRestaurantSelect = async (id) => {
+    navigate(`/restaurants/${id}`);
+  };
   return (
     <div className="table-responsive m-4">
       <table className="table  table-striped">
@@ -49,7 +54,9 @@ const RestaurantList = () => {
             restaurants.map((restaurant) => {
               return (
                 <tr key={restaurant.id}>
-                  <td>{restaurant.name}</td>
+                  <td onClick={() => handleRestaurantSelect(restaurant.id)}>
+                    {restaurant.name}
+                  </td>
                   <td>{restaurant.location}</td>
                   <td>{"$".repeat(restaurant.price_range)}</td>
                   <td>reviews</td>
