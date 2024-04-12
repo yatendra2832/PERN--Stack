@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { RestaurantContext } from "../context/RestaurantContext";
 import RestaurantFinder from "../apis/RestaurantFinder";
+import StarRating from "../components/StarRating";
 const RestaurantDetails = () => {
   const { id } = useParams();
   const { selectedRestaurant, setSelectedRestaurant } =
@@ -20,12 +21,23 @@ const RestaurantDetails = () => {
     fetchRestaurant();
   }, []);
 
+ 
+
   return (
     <>
-      <h1>Restaurant Details</h1>
-      <h1>{selectedRestaurant.name}</h1>
-      <h1>{selectedRestaurant.location}</h1>
-      <h1>{selectedRestaurant.price_range}</h1>
+      <div className=" text-center" id="restaurant_details">
+        {" "}
+        <h1 className="fw-semibold fs-1">Restaurant Details</h1>
+        <div>
+          <h1 className="fw-bold text-danger">{selectedRestaurant.name}</h1>
+          {selectedRestaurant && <StarRating rating={2.1} />}
+        </div>
+        <h2>{selectedRestaurant.location}</h2>
+        <h3 className="text-info">
+          {" "}
+          Price Range :{selectedRestaurant.price_range}
+        </h3>
+      </div>
     </>
   );
 };
