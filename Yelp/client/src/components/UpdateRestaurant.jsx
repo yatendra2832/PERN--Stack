@@ -23,7 +23,7 @@ const UpdateRestaurant = (props) => {
 
   const fetchData = async () => {
     const response = await RestaurantFinder.get(`/${id}`);
-    const { name, location, price_range } = response.data[0];
+    const { name, location, price_range } = response.data.restaurant;
     setFormData({
       name: name || "",
       location: location || "",
@@ -42,10 +42,9 @@ const UpdateRestaurant = (props) => {
         ...formData,
         price_range: formData.priceRange,
       });
-      if(response.status === 200){
-        navigate('/')
-      };
-      
+      if (response.status === 200) {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Error updating restaurant:", error);
     }
