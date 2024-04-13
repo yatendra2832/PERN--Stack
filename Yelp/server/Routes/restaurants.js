@@ -17,8 +17,16 @@ router.get('/', async (req, res) => {
 router.get('/:id', checkRestaurantExists, async (req, res) => {
     try {
         const { id } = req.params;
-        const results = await pool.query('SELECT * FROM restaurants WHERE id = $1', [id])
-        res.status(200).send(results.rows);
+        const restaurantResult = await pool.query('SELECT * FROM restaurants WHERE id = $1', [id])
+        const reviewsResult = await pool.query('SELECT * FROM reviews WHERE restaurant_id = $1', [id])
+
+        const restaurant = restaurantResult.rows[0];
+        const reviews = reviewsResult.rows;
+
+        // Combine restaurant and reviews into a single object
+        const data = { restaurant, reviews };
+
+        res.status(200).json(data);
     } catch (error) {
         console.log(error.message);
     }
