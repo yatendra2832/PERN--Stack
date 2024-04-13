@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import StarRating from "./StarRating";
-
-const AddReview = ({ onSubmit }) => {
+import RestaurantFinder from "../apis/RestaurantFinder";
+import { useParams } from "react-router-dom";
+const AddReview = ({  addReviewToList }) => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     rating: 0,
@@ -13,11 +15,20 @@ const AddReview = ({ onSubmit }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // onSubmit(formData);
-    // Clear form fields after submission
-    setFormData({ name: "", rating: 0, review: "" });
+    try {
+      const response = await RestaurantFinder.post(
+        `/${id}/addReview`,
+        formData
+      );
+      if (response.status === 201) {
+        addReviewToList(response.data);
+        setFormData({ name: "", rating: 0, review: "" });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

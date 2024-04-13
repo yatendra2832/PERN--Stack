@@ -25,13 +25,19 @@ const RestaurantDetails = () => {
     fetchRestaurant();
   }, []);
 
+  const addReviewToList = (newReview) => {
+    setReviews([...reviews, newReview]);
+  };
+
   return (
     <>
       <div className=" text-center" id="restaurant_details">
         {" "}
         <h1 className="fw-semibold fs-1">Restaurant Details</h1>
         <div>
-          <h1 className="fw-bold text-danger">{selectedRestaurant.name} - {selectedRestaurant.location}</h1>
+          <h1 className="fw-bold text-danger">
+            {selectedRestaurant.name} - {selectedRestaurant.location}
+          </h1>
         </div>
         <h2></h2>
         <h3 className="text-info">
@@ -40,7 +46,7 @@ const RestaurantDetails = () => {
         </h3>
         {selectedRestaurant && (
           <>
-            <AddReview />
+            <AddReview addReviewToList={addReviewToList} />
             <div className="mt-3">
               <h3 className="text-primary text-center">Our Reviews</h3>
               <Reviews reviews={reviews} />
