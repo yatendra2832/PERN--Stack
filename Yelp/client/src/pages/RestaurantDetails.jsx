@@ -39,7 +39,11 @@ const RestaurantDetails = () => {
             {selectedRestaurant.name} - {selectedRestaurant.location}
           </h1>
         </div>
-        <h2></h2>
+        <h2>
+          {" "}
+          {<StarRating rating={selectedRestaurant.average_rating} />}({selectedRestaurant.count}
+          )
+        </h2>
         <h3 className="text-info">
           {" "}
           Price Range :{selectedRestaurant.price_range}
