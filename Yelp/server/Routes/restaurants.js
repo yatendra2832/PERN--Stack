@@ -6,7 +6,8 @@ const pool = require('../db/index')
 
 router.get('/', async (req, res) => {
     try {
-        const results = await pool.query('SELECT * FROM restaurants');
+        // const results = await pool.query('SELECT * FROM restaurants');
+        const results = await pool.query('SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM reviews GROUP BY restaurant_id) reviews ON restaurants.id = reviews.restaurant_id ')
         res.status(200).send(results.rows);
     } catch (error) {
         console.error('Error retrieving restaurants:', error.message);
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', checkRestaurantExists, async (req, res) => {
     try {
         const { id } = req.params;
-        const restaurantResult = await pool.query('SELECT * FROM restaurants WHERE id = $1', [id])
+        const restaurantResult = await pool.query('SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM reviews GROUP BY restaurant_id) reviews ON restaurants.id = reviews.restaurant_id  WHERE id = $1', [id])
         const reviewsResult = await pool.query('SELECT * FROM reviews WHERE restaurant_id = $1', [id])
 
         const restaurant = restaurantResult.rows[0];
